@@ -19,10 +19,18 @@ async def lifespan(_app: FastAPI):
     await engine.dispose()
 
 
-app = FastAPI(title="Recipe API", description="Асинхронный сервис для управления рецептами", lifespan=lifespan)
+app = FastAPI(
+    title="Recipe API",
+    description="Асинхронный сервис для управления рецептами",
+    lifespan=lifespan,
+)
 
 
-@app.get("/recipes", response_model=list[schemas.RecipeSchema], summary="Получить список всех рецептов")
+@app.get(
+    "/recipes",
+    response_model=list[schemas.RecipeSchema],
+    summary="Получить список всех рецептов",
+)
 async def get_recipes(session: AsyncSession = Depends(get_session)) -> Sequence[Recipe]:
     """Верни список всех рецептов, отсортированных по популярности. Сортировка:
     1. По убыванию количества просмотров (views)
@@ -35,7 +43,11 @@ async def get_recipes(session: AsyncSession = Depends(get_session)) -> Sequence[
     return result.scalars().all()
 
 
-@app.get("/recipes/{recipe_id}", response_model=schemas.RecipeDetailed, summary="Получить информацию о рецепте")
+@app.get(
+    "/recipes/{recipe_id}",
+    response_model=schemas.RecipeDetailed,
+    summary="Получить информацию о рецепте",
+)
 async def get_recipe(recipe_id: int, session: AsyncSession = Depends(get_session)):
     """Верни информацию о рецепте по его ID, включая ингредиенты
 
@@ -44,7 +56,10 @@ async def get_recipe(recipe_id: int, session: AsyncSession = Depends(get_session
     """
     recipe = await session.get(Recipe, recipe_id)
     if not recipe:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Recipe with id {recipe_id} not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Recipe with id {recipe_id} not found",
+        )
 
     recipe.views += 1
     await session.commit()
@@ -52,15 +67,22 @@ async def get_recipe(recipe_id: int, session: AsyncSession = Depends(get_session
     return recipe
 
 
-@app.post("/recipes", response_model=schemas.RecipeOut, summary="Добавить новый рецепт",
-          status_code=status.HTTP_201_CREATED)
+@app.post("/recipes",
+          response_model=schemas.RecipeOut,
+          summary="Добавить новый рецепт",
+          status_code=status.HTTP_201_CREATED,
+          )
 async def create_recipe(recipe_data: schemas.RecipeIn, session: AsyncSession = Depends(get_session)) -> Recipe:
     """Создай новый рецепт с указанными параметрами и ингредиентами.
 
     :param recipe_data: Данные нового рецепта
     :param session: Асинхронная сессия БД
     """
-    new_recipe = Recipe(name=recipe_data.name, cook_time=recipe_data.cook_time, description=recipe_data.description)
+    new_recipe = Recipe(
+        name=recipe_data.name,
+        cook_time=recipe_data.cook_time,
+        description=recipe_data.description,
+    )
     if recipe_data.ingredients:
         # Ищем все существующие ингредиенты
         query = select(Ingredient).where(Ingredient.name.in_(recipe_data.ingredients))
@@ -82,4 +104,3 @@ async def create_recipe(recipe_data: schemas.RecipeIn, session: AsyncSession = D
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
-
