@@ -28,11 +28,12 @@ async def test_create_recipe(client: AsyncClient):
 
 async def test_get_recipe_by_id(client: AsyncClient):
     """GET /recipes/{id} — получение рецепта"""
-    recipe_data = {"name": "Паста",
-                   "cook_time": 15,
-                   "description": "Быстрая паста",
-                   "ingredients": ["макароны"],
-                   }
+    recipe_data = {
+        "name": "Паста",
+        "cook_time": 15,
+        "description": "Быстрая паста",
+        "ingredients": ["макароны"],
+        }
     create_resp = await client.post("/recipes", json=recipe_data)
     recipe_id = create_resp.json()["id"]
     response = await client.get(f"/recipes/{recipe_id}")
