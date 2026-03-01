@@ -57,8 +57,7 @@ async def get_recipe(recipe_id: int, session: AsyncSession = Depends(get_session
     recipe = await session.get(Recipe, recipe_id)
     if not recipe:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Recipe with id {recipe_id} not found",
+            status_code=status.HTTP_404_NOT_FOUND, detail=f"Recipe with id {recipe_id} not found"
         )
 
     recipe.views += 1
@@ -67,12 +66,15 @@ async def get_recipe(recipe_id: int, session: AsyncSession = Depends(get_session
     return recipe
 
 
-@app.post("/recipes",
+@app.post(
+    "/recipes",
           response_model=schemas.RecipeOut,
           summary="Добавить новый рецепт",
           status_code=status.HTTP_201_CREATED,
           )
-async def create_recipe(recipe_data: schemas.RecipeIn, session: AsyncSession = Depends(get_session)) -> Recipe:
+async def create_recipe(
+        recipe_data: schemas.RecipeIn, session: AsyncSession = Depends(get_session)
+) -> Recipe:
     """Создай новый рецепт с указанными параметрами и ингредиентами.
 
     :param recipe_data: Данные нового рецепта
