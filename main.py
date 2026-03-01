@@ -3,11 +3,11 @@ from contextlib import asynccontextmanager
 
 import uvicorn
 from fastapi import Depends, FastAPI, HTTPException, status
-from sqlalchemy import asc, desc, select 
+from sqlalchemy import asc, desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db import Base, Ingredient, Recipe, engine, get_session
 import schemas
+from db import Base, Ingredient, Recipe, engine, get_session
 
 
 @asynccontextmanager
@@ -82,3 +82,4 @@ async def create_recipe(recipe_data: schemas.RecipeIn, session: AsyncSession = D
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+
