@@ -43,8 +43,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Type check with mypy
       run: |
-        # mypy . --ignore-missing-imports
-        mypy . --explicit-package-bases
+        mypy . --explicit-package-bases --ignore-missing-imports
     - name: Test with pytest
       run: |
         pytest
