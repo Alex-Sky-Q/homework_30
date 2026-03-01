@@ -1,8 +1,8 @@
 from typing import AsyncGenerator
 
-from sqlalchemy import Column, ForeignKey, Table, Integer, Text
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
-from sqlalchemy.orm import DeclarativeBase, relationship, Mapped, mapped_column
+from sqlalchemy import Column, ForeignKey, Integer, Table, Text
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine 
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
 DATABASE_URL = "sqlite+aiosqlite:///./recipes.db"
