@@ -13,8 +13,12 @@ from ..main import app, get_session
 async def test_engine():
     """Создай тестовый engine для тестовой БД в памяти"""
     test_db_url = "sqlite+aiosqlite:///:memory:"
-    engine = create_async_engine(test_db_url, echo=False, poolclass=StaticPool,
-                                 connect_args={"check_same_thread": False})
+    engine = create_async_engine(
+        test_db_url,
+        echo=False,
+        poolclass=StaticPool,
+        connect_args={"check_same_thread": False},
+    )
     yield engine
     await engine.dispose()
 
@@ -38,9 +42,11 @@ async def setup_database(test_engine):
 @pytest_asyncio.fixture
 async def override_get_session(test_session_maker):
     """Переопредели get_session для тестов"""
+
     async def get_test_session() -> AsyncGenerator[AsyncSession, None]:
         async with test_session_maker() as session:
             yield session
+
     return get_test_session
 
 
@@ -48,6 +54,8 @@ async def override_get_session(test_session_maker):
 async def client(override_get_session):
     """Верни TestClient с переопределённой БД"""
     app.dependency_overrides[get_session] = override_get_session
-    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+    async with AsyncClient(
+            transport=ASGITransport(app=app), base_url="http://test"
+    ) as ac:
         yield ac
     app.dependency_overrides.clear()
