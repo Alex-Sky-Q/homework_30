@@ -2,11 +2,11 @@ from collections.abc import Sequence
 from contextlib import asynccontextmanager
 
 import uvicorn
-from fastapi import FastAPI, Depends, HTTPException, status
-from sqlalchemy import select, desc, asc
+from fastapi import Depends, FastAPI, HTTPException, status
+from sqlalchemy import asc, desc, select 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db import engine, get_session, Base, Recipe, Ingredient
+from db import Base, Ingredient, Recipe, engine, get_session
 import schemas
 
 
