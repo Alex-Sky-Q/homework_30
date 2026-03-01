@@ -32,7 +32,7 @@ recipe_ingredient_link = Table(
 
 class Recipe(Base):
     """Модель рецепта"""
-    
+
     __tablename__ = 'recipe'
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(Text, nullable=False)
@@ -50,7 +50,7 @@ class Recipe(Base):
 
 class Ingredient(Base):
     """Модель ингредиента"""
-    
+
     __tablename__ = 'ingredient'
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(Text, nullable=False, unique=True)
@@ -61,3 +61,4 @@ class Ingredient(Base):
 
     def __repr__(self):
         return f"<Ingredient(id={self.id}, name='{self.name}')>"
+
