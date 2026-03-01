@@ -4,7 +4,6 @@ from sqlalchemy import Column, ForeignKey, Integer, Table, Text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
-
 DATABASE_URL = "sqlite+aiosqlite:///./recipes.db"
 
 engine = create_async_engine(DATABASE_URL, echo=True)
@@ -54,4 +53,5 @@ class Ingredient(Base):
 
     def __repr__(self):
         return f"<Ingredient(id={self.id}, name='{self.name}')>"
+
 
