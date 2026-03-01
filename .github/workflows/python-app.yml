@@ -36,7 +36,14 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Check imports with isort
       run: |
-        isort . --check --diff 2>&1
+        # isort . --check --diff 2>&1
+        echo "Текущая директория: $(pwd)"
+        echo "Файлы .py в репозитории:"
+        find . -name "*.py" -type f
+        echo "Версия isort:"
+        isort --version-number
+        echo "Запуск isort --check --diff с явным перенаправлением:"
+        isort . --check --diff --verbose 2>&1 || echo "Exit code: $?"
     - name: Check formatting with black
       run: |
         black . --check --diff
