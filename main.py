@@ -57,7 +57,7 @@ async def get_recipe(recipe_id: int, session: AsyncSession = Depends(get_session
     recipe = await session.get(Recipe, recipe_id)
     if not recipe:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, 
+            status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Recipe with id {recipe_id} not found",
         )
 
@@ -107,3 +107,4 @@ async def create_recipe(
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+
